@@ -1,6 +1,7 @@
 import spacy
 from spacy_cld import LanguageDetector
 from langdetect import detect, LangDetectException
+import pycld2 as cld2
 
 nlp = spacy.load('xx_ent_wiki_sm')
 language_detector = LanguageDetector()
@@ -10,10 +11,6 @@ nlp.add_pipe(language_detector)
 def spacy_language_detector(string):
     doc = nlp(string)
     lang = doc._.languages
-    if lang in [['fa'], ['ar']]:
-        pass
-    else:
-        lang = ['fa']
     return lang[0]
 
 
@@ -22,15 +19,31 @@ def lang_detect(string):
         lang = detect(string)
     except LangDetectException:
         lang = 'fa'
-    if lang in {'fa', 'ar'}:
-        pass
-    else:
-        lang = 'fa'
     return lang
 
 
-def language_detector(string, library='langdetect'):
-    if library == 'langdetect':
-        lang_detect(string)
+def cld2_language_detector(string):
+    is_reliable, text_bytes_found, details = cld2.detect(string)
+    if is_reliable:
+        return details[0][1]
+    else:
+        return 'fa'
+
+
+def language_detector(string, library='pycld2'):
+    libraries = {'pycld2', 'langdetect', 'spacy'}
+    language = ''
+
+    if library == 'pycld2':
+        language = cld2_language_detector(string)
+    elif library == 'langdetect':
+        language = lang_detect(string)
     elif library == 'spacy':
-        spacy_language_detector(string)
+        language = spacy_language_detector(string)
+    else:
+        assert (library in libraries)
+
+    if language not in {'fa', 'ar'}:
+        return 'fa'
+    else:
+        return language
