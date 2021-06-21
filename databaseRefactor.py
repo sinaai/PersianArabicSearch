@@ -15,12 +15,12 @@ def separate_languages(string, library='voting'):
     return farsi, arabic
 
 
-def rebuild_index(index_name, text_field):
+def rebuild_index(index_name, text_field, language_detection_library='voting'):
     es = Elasticsearch()
     lastID = es.count(index=index_name)['count']
     for i in range(1, lastID + 1):
         txt = es.get(index=index_name, id=i)['_source'][text_field]
-        farsi, arabic = separate_languages(txt)
+        farsi, arabic = separate_languages(txt, language_detection_library)
         doc = {
             text_field: txt,
             "farsi_field": farsi,

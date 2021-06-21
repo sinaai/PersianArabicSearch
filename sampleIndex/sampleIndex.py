@@ -4,7 +4,7 @@ import os
 directory = "sampleIndex/txt files"
 
 
-def buildindex(field="body", name="sample-index"):
+def buildindex(name="sample-index", field="body"):
     es = Elasticsearch()
     for txt_idx, txt_file_name in enumerate(os.listdir(directory)):
         doc = {

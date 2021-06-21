@@ -33,10 +33,6 @@ def cld2_language_detector(string):
         return ''
 
 
-def most_common(lst):
-    return max(set(lst), key=lst.count)
-
-
 def voting_language_detector(string):
     votes = [cld2_language_detector(string), lang_detect(string), spacy_language_detector(string)]
     if votes.count('fa') == 0 and votes.count('ar') == 0:

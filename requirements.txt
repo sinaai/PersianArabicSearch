@@ -1,0 +1,5 @@
+elasticsearch~=7.12.0
+spacy~=2.3.7
+pycld2~=0.41
+langdetect~=1.0.9
+hazm~=0.7.0
