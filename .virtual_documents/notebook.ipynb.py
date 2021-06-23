@@ -7,10 +7,11 @@ buildindex(name="sample-index", field="body")
 
 
 # seperate arabic and farsi sentences and added as new fields to database
-index_name = 'sample-index'
+input_index = 'sample-index'
+output_index = 'my-index'
 text_field = 'body'
 
-rebuild_index(index_name, text_field, language_detection_library='voting')
+rebuild_index(input_index, output_index, text_field, language_detection_library='voting')
 
 
 
