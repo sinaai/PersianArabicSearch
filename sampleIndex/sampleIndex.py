@@ -1,10 +1,8 @@
 from elasticsearch import Elasticsearch
 import os
 
-directory = "sampleIndex/txt files"
 
-
-def buildindex(name="sample-index", field="body"):
+def buildindex(name="sample-index", field="body", directory="sampleIndex/txt files"):
     es = Elasticsearch()
     for txt_idx, txt_file_name in enumerate(os.listdir(directory)):
         doc = {
