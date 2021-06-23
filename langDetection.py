@@ -1,11 +1,11 @@
-import spacy
 from spacy_cld import LanguageDetector
 from langdetect import detect, LangDetectException
 import pycld2 as cld2
+import xx_ent_wiki_sm
 
-nlp = spacy.load('xx_ent_wiki_sm')
-language_detector = LanguageDetector()
-nlp.add_pipe(language_detector)
+nlp = xx_ent_wiki_sm.load()
+detector = LanguageDetector()
+nlp.add_pipe(detector)
 
 
 def spacy_language_detector(string):
