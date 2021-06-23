@@ -46,6 +46,12 @@ def rebuild_index(input_index, output_index, text_field, language_detection_libr
                 "arabic_field": {
                     "type": "text",
                     "analyzer": "arabic"
+                },
+                "farsi_indices": {
+                    "type": "text"
+                },
+                "arabic_indices": {
+                    "type": "text"
                 }
             }
         }
