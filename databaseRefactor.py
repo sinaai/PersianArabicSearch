@@ -27,7 +27,9 @@ def separate_languages(string, library='voting'):
         else:
             arabic = arabic + sentence
             arabic_idx += indices[i]
-    return farsi, arabic, farsi_idx, arabic_idx
+    language_dict = {'farsi_field': farsi, 'arabic_field': arabic,
+                     'farsi_indices': farsi_idx, 'arabic_indices': arabic_idx}
+    return language_dict
 
 
 def rebuild_index(input_index, output_index, text_field, language_detection_library='voting'):
@@ -59,12 +61,6 @@ def rebuild_index(input_index, output_index, text_field, language_detection_libr
     es.indices.create(index=output_index, body=mapping)
     for i in range(1, lastID + 1):
         txt = es.get(index=input_index, id=i)['_source'][text_field]
-        farsi, arabic, farsi_idx, arabic_idx = separate_languages(txt, language_detection_library)
-        doc = {
-            text_field: txt,
-            "farsi_field": farsi,
-            "arabic_field": arabic,
-            "farsi_indices": farsi_idx,
-            "arabic_indices": arabic_idx
-        }
+        doc = separate_languages(txt, language_detection_library)
+        doc[text_field] = txt
         es.index(index=output_index, id=i, body=doc)
