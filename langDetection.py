@@ -10,7 +10,10 @@ nlp.add_pipe(detector)
 
 def spacy_language_detector(string):
     doc = nlp(string)
-    lang = doc._.languages
+    try:
+        lang = doc._.languages
+    except:
+        lang = ''
     if len(lang):
         return lang[0]
     else:
@@ -20,13 +23,16 @@ def spacy_language_detector(string):
 def lang_detect(string):
     try:
         lang = detect(string)
-    except LangDetectException:
+    except:
         lang = ''
     return lang
 
 
 def cld2_language_detector(string):
-    is_reliable, text_bytes_found, details = cld2.detect(string)
+    try:
+        is_reliable, text_bytes_found, details = cld2.detect(string)
+    except:
+        is_reliable = False
     if is_reliable:
         return details[0][1]
     else:
@@ -38,7 +44,7 @@ def voting_language_detector(string):
     if votes.count('fa') == 0 and votes.count('ar') == 0:
         return ''
     else:
-        if votes.count('fa') >= votes.count('ar'):
+        if votes.count('fa') > votes.count('ar'):
             return 'fa'
         else:
             return 'ar'
@@ -60,6 +66,6 @@ def language_detector(string, library='voting'):
         assert (library in libraries)
 
     if language not in {'fa', 'ar'}:
-        return 'fa'
+        return 'ar'
     else:
         return language
